@@ -1,25 +1,25 @@
-#Setting Up and Creating RESTful Web Services with Node.js, Express, MongoDb Atlas and Unit Testing
+# Setting Up and Creating RESTful Web Services with Node.js, Express, MongoDb Atlas and Unit Testing
 
 ## Setting up your environment
 
 - Download node LTS version.
-- Create a folder.
-- CD to that folder.
+- Create a project folder.
+- CD to that project folder.
 - Verify the version of node and npm using -v parameter.
-- If all looks good then run:: npm init
-- Answer the questionnaire with mostly the defaults.
-- Answering the questionaire what npm does is create a package.json file.
-- Now run:: npm install express
+- If you are satisfied with the version of node and npm you have installed run:: npm init
+- Answer npm init questionnaire with mostly the defaults.
+- The questionaire creates a package.json file in your project directory.
+- run:: npm install express
 - Express will show on the dependency list on package.json
-- Create a new file in the project called app.js
+- Create a new file in the project folder and call it app.js
 - Add the following to your app.js file:
 ```javascript
 var express = require('express');
 var app = express();
 ```
 
-- Notice that we break with the practice of using const and there is a specific reason for that will be noted later in these instructions. We will still follow an ES6 practice in the code.
-- Add the following code below the one you just added.
+- NOTE:: We break with the practice of using const because later will be demoing the use of ESLint to fix this and apply a specific style guide, in this case the Airbnb styleguide which all the JS geeks rave about.
+- Add the following code to app.js.
 ```javascript
 var port = process.env.PORT || 3000;
 ```
@@ -49,7 +49,7 @@ app.get('/', function (req, res) {
 });
 ```
 
-- Next we configure the listen() method for app.
+- Next we configure the listen() method for app.js::
 ```javascript
 app.listen(port, function () {
     console.log('Running on PORT: ' + port);
@@ -69,37 +69,37 @@ app.listen(port, function () {
 });
 ```
 
-- The code above is the minimal boiler plate code you need to run an application.  With this you will be able to run what is fundamentally an express app.
-- If you go to the terminal in your IDE and type in node app.js the application will run. You can verify that by going to localhost:3000
+- The code above is the minimal boiler plate code you need to run an application with Express.  With this code in place you have the essential express app.
+- If you go to the terminal in your IDE and type in node app.js the application will run. You can verify that by going to localhost:3000::
 
-![Image.png](https://res.craft.do/user/full/3bd38c9a-7a34-eba3-9876-1d5233e52b8d/doc/69046318-833E-48F8-B393-2F8BE3F4280B/07D043AE-DD0E-4DE6-8A88-EE33B87F1186_2/yVcCm1yYbAmD3OKhLwBPYEbv01AIBTIxhSTaKE9XDt0z/Image.png)
+![Image.png](https://res.craft.do/user/full/3bd38c9a-7a34-eba3-9876-1d5233e52b8d/doc/69046318-833E-48F8-B393-2F8BE3F4280B/969F4A28-DE82-4065-823B-B894A26EB1A9_2/iz3o5xL2FNI7xsQniPCBhbsQwpbWpicH8aJeDDuXXKUz/Image.png)
 
 ![Image.png](https://res.craft.do/user/full/3bd38c9a-7a34-eba3-9876-1d5233e52b8d/doc/69046318-833E-48F8-B393-2F8BE3F4280B/A1540EB2-C501-4E72-B33F-B56359D158F1_2/Fc6LNgvrzS6cGMRMci70kD7AABacEDLDRY2863kYKkEz/Image.png)
 
-- We did all this manually as we should to learn express but express has a CLI that will generate this code and more configs for the application and will create the very basic folder structure.
-- I included the instruction above to show the work that the CLI does for you::
+- We did all this manually to learn the fundamentals of setting up an Express app but express has a CLI for generating this code and more for an application and will create the very basic folder structure needed later for app resources.
+- The instructions above show only part the work that the CLI does for you::
    - Install the express CLI tool globally:
-      - ::npm install express-generator -g::
+      - npm install express-generator -g
    - create a new express project
-      - ::express --view=ejs api::
-   - The generator creates a new express app called api. The ::--view:: flag tells the generator to use ejs template engine for the view files.
+      - express --view=ejs api
+   - The generator creates a new express app called api. The --view flag tells the generator to use ejs template engine for the view files.
    - Access your directory:
       - cd api
-   - **::Folder structure should look like this:::**
+   - **Folder structure should look like this:**
 
-      `+---bin`
+`+---bin`
 
-      `+---public`
+`+---public`
 
-      `+---routes`
+`+---routes`
 
-      `+---views`
+`+---views`
 
-      `+---app.js`
+`+---app.js`
 
-      `+---package.json`
+`+---package.json`
 
-   Your app.js with the CLI command  we just used should look something like this::
+Your app.js with the CLI command  we just ran should look something like this::
 
 ```javascript
 var express = require('express');
@@ -160,22 +160,25 @@ app.use(function(err, req, res, next) {
 module.exports = app;
 ```
 
-   Notice that the CLI configures much more for you that is needed.
+Notice that the CLI configures much more for you than is needed to run an app.
 
-   - All the basic npm modules.
-   - The Cross-origin resource sharing (CORS) configuration.
-   - The view engine set up.
-   - 404 catch set up
-   - The error handler for the app.
+- All the basic npm modules.
+- The Cross-origin resource sharing (CORS) configuration.
+- The view engine set up.
+- 404 catch set up
+- The error handler for the app.
 
-This was both the very basic boiler plate code built manually, and the code created by the Express CLI (express-generator).
+The above is a comparison contrast between the very basic boiler plate code manually built, and the code created by the Express CLI (express-generator).
 
 ## Now let's add some tools to our manually built express project.
 
-## ESLint
+### The two tools we will be learning how to use are::
 
 1. ESLint - linting (Make sure we write our code the proper way.)
-2. nodemon - (Handles restarting our application. And passing in the port and things like that.)
+2. nodemon - (Handles restarting our application. And passing in the port and other configurations.)
+
+## ESLint
+
 - Before we install the tools our package.json looks like this::
 
 ```json
@@ -199,7 +202,7 @@ This was both the very basic boiler plate code built manually, and the code crea
 
 npm i eslint -D
 
-So the ::i:: is for install the package name and the ::-D:: means added to our dev dependencies not our regular dependencies.
+So the i is for install the package name and the -D means add it to our dev dependencies not our regular dependencies.
 
 Our package.json looks like this:
 
@@ -223,7 +226,7 @@ Our package.json looks like this:
 }
 ```
 
-The reason we want to add the dev dependencies is when it deploys to production and the deployment does the npm install it's not going to install the dev dependencies.
+The reason we want to cordon off the dev dependencies in it's own little closure is that when it deploys to production and the deployment does the npm install it's not going to install the dev dependencies items in the devDependencies section of the package.json.
 
 Now we are going to run all of our linting from our script section of the package.json.
 
@@ -254,18 +257,30 @@ Now we are going to run ESlint and notice how we are going to run it::
 npm run lint -- --init
 ```
 
-First we are doing an npm run which is for script commands that are custom or not the standard script for npm to run.  So if you put a new script and decide to call it "applepie" then you have to call it with npm run. ::npm start and npm test are the only script verbs that you don't have to put run in front of.::
+First we are doing an npm run which is for script commands that are custom or not the standard script (start and test).  So if you put a new script in the script section of package.json and decide to call it "applepie" then you have to call it with npm run::
 
-Second after the lint we have -- or minus minus this means whatever parameter comes next pass it into the thing that we are running.
+npm run applepie
 
-Third we are passing in --init which will run ESLint but will have us fill out a questionnaire to configure ESLint.
+As opposed to start and test that are::
 
-Below are the way I configure my ESLint, it's a matter of team culture and desired outcomes.  Please configure your linter as you need.  Notice that I did two things that worthy of note.  I used the ::airbnb style guide:: because it's the preferred style guide and second I selected format for config files is Javascript.
+npm start
 
-Notice that ESLint asks me if I want to install the packages that go with the config I selected and I say Yes and use npm for it.  And it does it.
+&
+
+npm test
+
+Second after the lint we have -- or minus minus which means whatever parameter come after -- pass it or them into the script that is being called.
+
+Third we are passing in --init parameter which will run ESLint but will have us fill out a questionnaire to configure ESLint.
+
+Below is the way I configured my ESLint, how you configure ESLint is a matter of team culture and desired outcomes.  Please configure your linter as you need.  Notice that I did three things that worthy of notice.
+
+1. I used the airbnb style guide because it's the preferred style guide and
+2. I selected format for config files to be in Javascript.
+3. ESLint asks if we want to install the packages that go with the config selected and the response given is Yes and use npm to do said install.  npm proceeds to do the install.
 
 ```Bash
-base) franciscocruz@Franciscos-MBP:~/wrk/express_rest$ npm run lint -- --init
+npm run lint -- --init
 
 > express_rest@1.0.0 lint
 > eslint . --init
@@ -296,7 +311,7 @@ added 67 packages, and audited 225 packages in 6s
   run `npm fund` for details
 
 found 0 vulnerabilities
-Successfully created .eslintrc.js file in /Users/franciscocruz/wrk/express_rest
+Successfully created .eslintrc.js file in /XXXX/XXXX
 ```
 
 Notice what package.json looks like now::
@@ -328,16 +343,16 @@ Now we are going to run::
 
 npm run lint
 
-This is what the output to my initial manual app.js creation looks like for the linter.
+This is what the output to the initial manual app.js creation looks like for the linter.
 
 ```Bash
-(base) franciscocruz@Franciscos-MBP:~/wrk/express_rest$ npm run lint
+npm run lint
 
 > express_rest@1.0.0 lint
 > eslint .
 
 
-/Users/franciscocruz/wrk/express_rest/app.js
+app.js
   1:1   error    Unexpected var, use let or const instead                                       no-var
   1:1   error    Expected 1 empty line after require statement not followed by another require  import/newline-after-import
   2:1   error    Unexpected var, use let or const instead                                       no-var
@@ -355,16 +370,16 @@ This is what the output to my initial manual app.js creation looks like for the 
   9 errors and 0 warnings potentially fixable with the `--fix` option.
 ```
 
-Notice how it makes the suggestion to run --fix.
+Notice how it makes a suggestion to run --fix.
 
-I run --fix::
+We run --fix::
 
 npm run lint -- --fix
 
 This is the output it gives::
 
 ```Bash
-(base) franciscocruz@Franciscos-MBP:~/wrk/express_rest$ npm run lint -- --fix
+npm run lint -- --fix
 
 > express_rest@1.0.0 lint
 > eslint . --fix
@@ -393,7 +408,7 @@ app.listen(port, () => {
 });
 ```
 
-Notice it replaced the vars with const and it tighted up the neatness of the spacing to match the style guide.
+Notice it replaced the vars with const and it tightened up the neatness of the spacing to match the style guide.
 
 Our tiny little app is now worthy of Airbnb.
 
@@ -458,12 +473,14 @@ app.use(function(err, req, res, next) {
 module.exports = app;
 ```
 
-Lets install, run and fix that project with ESLint and see what the code changes into with the Airbnb style guide applied.
+Lets install, run and fix that Express generated code project with ESLint and see what the code changes into with the Airbnb style guide applied.
 
-Before I show you the changes made to app.js, because the other project if further along ESLint recursively checked the project sub dirs and linted those files too.  Here is the reason why I'm grateful that the --fix option exists.  Look at all these errors and warnings:
+Before I show you the changes made to app.js, because the Express generated code project if further along ESLint recursively checked the project root dir and sub dirs and linted every file in the project directory structure.
+
+Here is the reason why I'm grateful that the --fix option exists.  Look at all these errors and warnings:
 
 ```other
-/Users/franciscocruz/wrk/appointment-scheduler-web-react-app/api/app.js
+app.js
    1:1    error    Unexpected var, use let or const instead                                                            no-var
    2:1    error    Unexpected var, use let or const instead                                                            no-var
    3:1    error    Unexpected var, use let or const instead                                                            no-var
@@ -505,7 +522,7 @@ Before I show you the changes made to app.js, because the other project if furth
 ```
 
 ```other
-/Users/franciscocruz/wrk/appointment-scheduler-web-react-app/api/controllers/appointments.js
+/controllers/appointments.js
    2:7   error    A space is required after '{'                                                  object-curly-spacing
    2:35  error    A space is required before '}'                                                 object-curly-spacing
    3:1   error    Expected 1 empty line after require statement not followed by another require  import/newline-after-import
@@ -594,7 +611,7 @@ Before I show you the changes made to app.js, because the other project if furth
 ```
 
 ```other
-/Users/franciscocruz/wrk/appointment-scheduler-web-react-app/api/controllers/slot.js
+/controllers/slot.js
   3:1   error  Expected indentation of 2 spaces but found 4   indent
   4:1   error  Expected indentation of 4 spaces but found 8   indent
   5:1   error  Expected indentation of 4 spaces but found 8   indent
@@ -608,7 +625,7 @@ Before I show you the changes made to app.js, because the other project if furth
 ```
 
 ```other
-/Users/franciscocruz/wrk/appointment-scheduler-web-react-app/api/models/index.js
+/models/index.js
    1:1   error  Expected 1 empty line after require statement not followed by another require  import/newline-after-import
    2:1   error  Split 'const' declarations into multiple statements                            one-var
    2:7   error  Use object destructuring                                                       prefer-destructuring
@@ -634,7 +651,7 @@ Before I show you the changes made to app.js, because the other project if furth
 ```
 
 ```other
-/Users/franciscocruz/wrk/appointment-scheduler-web-react-app/api/models/slot.js
+/models/slot.js
    1:15  error  Identifier 'slot_time' is not in camel case                camelcase
    1:26  error  Identifier 'slot_date' is not in camel case                camelcase
    1:37  error  Identifier 'created_at' is not in camel case               camelcase
@@ -647,7 +664,7 @@ Before I show you the changes made to app.js, because the other project if furth
    8:1   error  Expected indentation of 2 spaces but found 4               indent
   10:1   error  Too many blank lines at the end of file. Max of 0 allowed  no-multiple-empty-lines
 
-/Users/franciscocruz/wrk/appointment-scheduler-web-react-app/api/routes/api/index.js
+/routes/api/index.js
   1:1   error  Unexpected var, use let or const instead                                       no-var
   2:1   error  Split 'const' declarations into multiple statements                            one-var
   2:34  error  Expected variable declaration to be on a new line                              one-var-declaration-per-line
@@ -655,7 +672,7 @@ Before I show you the changes made to app.js, because the other project if furth
   3:1   error  Expected indentation of 2 spaces but found 4                                   indent
   7:25  error  Newline required at end of file but not found                                  eol-last
 
-/Users/franciscocruz/wrk/appointment-scheduler-web-react-app/api/routes/index.js
+/routes/index.js
   1:1   error    Unexpected var, use let or const instead                                       no-var
   1:1   error    Expected 1 empty line after require statement not followed by another require  import/newline-after-import
   2:1   error    Unexpected var, use let or const instead                                       no-var
@@ -666,7 +683,7 @@ Before I show you the changes made to app.js, because the other project if furth
   5:25  error    A space is required after '{'                                                  object-curly-spacing
   5:54  error    A space is required before '}'                                                 object-curly-spacing
 
-/Users/franciscocruz/wrk/appointment-scheduler-web-react-app/api/routes/users.js
+/routes/users.js
   1:1   error    Unexpected var, use let or const instead                                       no-var
   1:1   error    Expected 1 empty line after require statement not followed by another require  import/newline-after-import
   2:1   error    Unexpected var, use let or const instead                                       no-var
@@ -676,7 +693,7 @@ Before I show you the changes made to app.js, because the other project if furth
   5:36  error    'next' is defined but never used                                               no-unused-vars
 ```
 
-That is a lot of errors and warnings.
+That is a lot of errors and warnings to fix manually. It's great to be able to make the first pass at it with --fix
 
 Here is what app.js looks like after --fix
 
@@ -737,7 +754,7 @@ app.use((err, req, res, next) => {
 module.exports = app;
 ```
 
-Notice the differences on var to const and the spacing in the app.
+Notice the change from var to const and the spacing in the app.
 
 ## nodemon
 
@@ -780,10 +797,10 @@ Notice the differences on var to const and the spacing in the app.
 }
 ```
 
-- run:: npm start ::(Notice I didn't have to type npm run start, I just had to type npm start.  start and test are the only script verbs that don't require run in front of them.)::
+- run:: npm start (Notice I didn't have to type npm run start, I just had to type npm start.  As stated before start and test are the only script verbs that don't require run in front of them.)
 - This is the output to npm start::
 ```Bash
-(base) franciscocruz@Franciscos-MBP:~/wrk/express_rest$ npm start
+npm start
 
 > express_rest@1.0.0 start
 > nodemon app.js
@@ -816,7 +833,7 @@ app.listen(port, () => {
 
 - Nodemon runs automatically on saving the file.
 ```Bash
-(base) franciscocruz@Franciscos-MBP:~/wrk/express_rest$ npm start
+npm start
 
 > express_rest@1.0.0 start
 > nodemon app.js
@@ -832,7 +849,7 @@ Running on PORT: 4000
 Running on PORT: 4000
 ```
 
-Concludes setting up the environment and tooling.
+This concludes setting up the environment and tooling.
 
 ## Writing the actual RESTful Service from scratch.
 
@@ -887,33 +904,25 @@ app.listen(port, () => {
 });
 ```
 
-This code as is gets the following error which I find very interesting:
+This code above is getting the following error:
 
 ```Bash
 Node.js v18.13.0
 [nodemon] app crashed - waiting for file changes before starting...
 [nodemon] restarting due to changes...
 [nodemon] starting `node app.js`
-/Users/franciscocruz/wrk/express_rest/node_modules/express/lib/router/index.js:161
+/node_modules/express/lib/router/index.js:161
   req.next = next;
            ^
 
 TypeError: Cannot create property 'next' on string '/books'
-    at Function.handle (/Users/franciscocruz/wrk/express_rest/node_modules/express/lib/router/index.js:161:12)
-    at router (/Users/franciscocruz/wrk/express_rest/node_modules/express/lib/router/index.js:47:12)
-    at Object.<anonymous> (/Users/franciscocruz/wrk/express_rest/app.js:9:1)
-    at Module._compile (node:internal/modules/cjs/loader:1218:14)
-    at Module._extensions..js (node:internal/modules/cjs/loader:1272:10)
-    at Module.load (node:internal/modules/cjs/loader:1081:32)
-    at Module._load (node:internal/modules/cjs/loader:922:12)
-    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12)
-    at node:internal/main/run_main_module:23:47
-
+    at Function.handle (/node_modules/express/lib/router/index.js:161:12)
+    
 Node.js v18.13.0
 [nodemon] app crashed - waiting for file changes before starting...
 ```
 
-Looks like I forgot the .route for the bookRouter.  Please see below:
+Looks like I forgot the .route() method for the bookRouter.  Please see below:
 
 ```javascript
 const express = require('express');
@@ -942,55 +951,55 @@ app.listen(port, () => {
 
 The error was gone when I called bookRouter.route()
 
-Here is the source of the solution after a Google Search::
-
-[TypeError: Cannot create property 'next' on string '/:id'](https://stackoverflow.com/questions/64728146/typeerror-cannot-create-property-next-on-string-id)
-
 Works now::
 
 ![Image.png](https://res.craft.do/user/full/3bd38c9a-7a34-eba3-9876-1d5233e52b8d/doc/69046318-833E-48F8-B393-2F8BE3F4280B/09F3CAFE-EDB9-49C5-98F0-0125F8AEC10B_2/mz5P3EreKrP5xBVEZCNIdnxomZ4lgYArSA5AmlVKja4z/Image.png)
 
-## Wiring up MongoDB
+## Wiring up MongoDB Atlas (MongoDB in the cloud!)
 
-- There are a lot of mongod client examples out there, since we are using MongoDB in the cloud and not local install we will be using mongosh (Pronounced mongo s h - but I like calling it mon gosh.) for a CLI client and Compass and DataGrip for a UI form interface and decide which one I like best out of those three.
+- There are a lot of mongod client examples out there, since we are using MongoDB in the cloud and not local install we will be using mongosh (Pronounced mongo-sh - but I like calling it mon-gosh.) for a REPL or CLI client and Compass and DataGrip for GUI. You decide which one you like best out of those three and any other out there.
 - Install the mongodb shell, run::
    - brew install mongosh
-- run the connection string in the shell::
+- run mongosh passing it the connection string in the format below and with the --apiVersion and --username parameters in the shell you just installed mongosh in::
    - mongosh "[mongodb+srv://<cluster_name>.<unique_identifier>.mongodb.net/r](mongodb+srv://anakin.2wbl4uu.mongodb.net/redkyber)<database_name>" --apiVersion 1 --username <user_name>
-   - ::Replace **myFirstDatabase**:: with the name of the database that connections will use by default. ::You will be prompted for the password for the Database User::, **cruzfg**. When entering your password, make sure all special characters are [URL encoded](https://dochub.mongodb.org/core/atlas-url-encoding).
-- If you also want to install Compass which is Mongo's own client for MongoDB in the cloud.
-   - Download an install Compass.
+   - You will be prompted for the password for the Database User. When entering your password, make sure all special characters are [URL encoded](https://dochub.mongodb.org/core/atlas-url-encoding).
+- If you also want to install Compass which is Mongo's own client for MongoDB Atlas (in the cloud).
+   - Download and install Compass.
    - The new connection modal will be open when Compass loads.
       - Otherwise click on your previously saved connection.
    - Past your connection string in the URI box in the New Connection modal::
       - [mongodb+srv://<database_user>:<password>@<cluster_name>.<unique_identifier>.mongodb.net/test](mongodb+srv://cruzfg:<password>@anakin.2wbl4uu.mongodb.net/test)
-      - The Advanced Connection Options allows you to connect to MongoDb that is installed locally.
+      - The Advanced Connection Options allows you to configure a connection to MongoDb that is installed locally.
    - If you wish to connect from Jetbrain's DataGrip click on the + sign on the upper right hand side of the Database Explorer.
    - Select Data Source
    - Select MongoDB
    - Fill out this form:
 
-![Image.png](https://res.craft.do/user/full/3bd38c9a-7a34-eba3-9876-1d5233e52b8d/doc/69046318-833E-48F8-B393-2F8BE3F4280B/F6ACB7C0-4B1D-4A52-B678-9CD13261C47D_2/lmIawXzRcKLnZ5sQ53T82V1HS4IefWPQUrN0mHLccDkz/Image.png)
+![Image.png](https://res.craft.do/user/full/3bd38c9a-7a34-eba3-9876-1d5233e52b8d/doc/69046318-833E-48F8-B393-2F8BE3F4280B/CBE0F6AB-81FB-40E5-AFC1-A75DF2A2B0CA_2/lHGDjeRRM5BTAHgM0KjxSxQ6gYPUeZR8kQ7wsUB5j2Yz/Image.png)
 
-      - Make sure your fields are filled and particularly the URL field because if you get that one right you are golden and replace the <password> in the url the for with hide the password as soon as you put it in::
+      - Make sure your fields are filled and particularly the URL field because if you get that one right you are golden and DataGrip will remove the <password> in the url by "hiding" it as soon as you put it in::
       - [mongodb+srv://<database_user>:<password>@<cluster_name>.<unique_identifier>.mongodb.net/?retryWrites=true&w=majority](mongodb+srv://cruzfg:<password>@anakin.2wbl4uu.mongodb.net/?retryWrites=true&w=majority)
    - These are your options for connecting MongoDB Atlas (MongoDB in the cloud.).
 - ## Definition of REPL
-   - REPL (Read-eval-print-loop) - I will be using the term REPL to describe the use of the the command line interface that is app specific or that presents a certain app.  Many tools have a REPL some people refer to it by the word session or shell or session shell. REPL stands for Read–eval–print loop.  Tool like Node.js, Python have REPLs for testing code, tools like SPARK's main interface is a REPL in which you treat the REPL like a CLI to communicate with the cluster.  In our case there are 3 ways to communicate with MongoDb Atlas one of them is mongosh which stands for mongo shell and is a different interface than the course that I'm taking notes on uses. The course uses the mongod CLI or REPL and the commands are different and the course uses these because it's a traditional local install of MongoDb where mongosh is in this case being used with a MongoDb Atlas Db (cloud MongoDb). I'm sure mongosh can be used with with a local MongoDb if you pass it the connection string of a local db to connect to but that's not what the course is doing, it's using the mongod CLI or REPL and I'm synthesising the task in mongosh (mongo-sh) or as I like to call it mon-gosh.
+   - REPL (Read-eval-print-loop) - I will be using the term REPL to describe the use of the the command line interface that is app specific or that presents when mongosh is loaded to memory.  Many tools have a REPLs some people refer to them by other words session or shell or session shell or CLI. REPL stands for Read–eval–print loop.  Tool like Node.js, Python have REPLs for testing code, tools like SPARK's main interface is a REPL in which you treat the REPL like a CLI to communicate with the cluster and do tasks like run jobs.  In our case there are 3 ways to communicate with MongoDb Atlas one of them is mongosh which stands for mongo shell and is a different interface than mongod CLI or REPL and the commands are different people use mongod because it's a traditional local install of MongoDb where mongosh is a more recent tool and suited for MongoDb Atlas (cloud MongoDb).
+   - I'm sure mongosh can be used with with a local MongoDb if you pass it the connection string of a local db to connect to but that's not what we are doing today, Because there are a lot of example using the mongod CLI or REPL we are reaching task parity for mongosh (mongo-sh) or as I like to call it mon-gosh.
 
-## Loading sample data to MongoDb from a JSON file.
+### Logging in through the REPL
 
-- To import Book data into your MongoDb database. Make sure MongoDB is running then run::
-   - 'mongo bookApi < booksJson.js'
-   - in the command line.
-- ::The above instruction are for loading sample data to a local version of MongoDb::
+- First you log into the mongosh REPL::
+   - mongosh "mongodb+srv://<cluster_name>.<unique_identifier>.[mongodb.net/myFirstDatabase](mongodb.net/myFirstDatabase)" --apiVersion 1 --username <user_name>
+- This command will cause the REPL to ask for your password.
+- Type password and log in.
+- Atlas MongoDb doesn't have a create verb, it will create the db if it doesn't exist when you ask it to::
+   - use <db_name>
 
 ## Loading sample data with mongosh.
 
-- ::show dbs:: - list dbs
-- ::use bookApi:: - switch context to the db you want - that you listed above.
-- ::load('js_file_path'):: - load the data by running the insertMany() JS script.
-- In this case the js_file_path would be for the bookJson.js file shown below.
+- show dbs - list dbs
+- use <db_name> - switch context to the db you want from the ones listed when you ran show dbs or creates the db if it doesn't exist.
+- load('<js_file_path>') - load the data by running the insertMany() JS script.
+- In this case the <js_file_path> would be for the bookJson.js file shown below.
+   - load('/project_root/booksJson.js')
 - NOTE:: The example that I found used .insert() method but mongosh responded that .insert() had been deprecated and that .insertOne(), .insertMany() and .insertAll() were the methods to use. ::
 ```javascript
 db.books.insertMany([
@@ -1045,34 +1054,14 @@ db.books.insertMany([
 ])
 ```
 
-### Logging in through the REPL
-
-- First you log into the mongosh REPL::
-   - mongosh "mongodb+srv://<cluster_name>.<unique_identifier>.[mongodb.net/myFirstDatabase](mongodb.net/myFirstDatabase)" --apiVersion 1 --username <user_name>
-- This command will cause the REPL to ask for your password.
-- Type password and log in.
-- ::Atlas MongoDb doesn't have a create verb::, it will create the db if it doesn't exist when you ask it to::
-   - ::use:: <databaseName>
-- Atlas atlas-14jzen-shard-0 [primary] redkyber> ::use bookApi::
-- Then in the context of the db you are in now execute the method() on the js_file_path and load the data into the database from the json file you type into the REPL with the following command:
-   - ::load('js_file_path')::
-   - example::
-      - ::load('/Users/franciscocruz/wrk/express_rest/booksJson.js')::
-- The data in the javascript file which states the collection it needs to go in by the notation db.books.insertMany() (collection being books - note there is no separate create collection step in this javascript file)  goes to the database you asked mongosh to "use".
-
-   ::show dbs:: - list dbs
-
-   ::use bookApi:: - switch context to the db you want
-
-   ::load('js_file_path'):: - load the data by running the insertMany() JS script.
-
+- The data in the javascript file which states the collection name it needs to use or create by the notation db.books.insertMany() (collection being books - note there is no separate create collection step in this javascript file).
 - Verify that your data is in MongoDb Atlas through the mongosh REPL::
 
-   **::show dbs::** - this command in the REPL lists  all the dbs
+**show dbs** - this command in the REPL lists  all the dbs
 
-   **::use <db_name>::** - will switch to the to the db context for the db name being used. You need to switch context to the db_name in order to do the next step which is list collections.
+**use <db_name>** - will switch to the to the db context for the db name being used. You need to switch context to the db_name in order to do the next step which is list collections.
 
-   **::show collections::** - lists all the collections in the db you just named with the use command.
+**show collections** - lists all the collections in the db you just named with the use command.
 
 Note below that when I tried to use bookApi the REPL explained that I was already in that context.
 
@@ -1080,13 +1069,13 @@ Note below that when I tried to use bookApi the REPL explained that I was alread
 
 To list all the records inside a collection then in the context of the db you run::
 
-::db.collectionName.find()::
+db.collectionName.find()
 
 Example:
 
 db.books.find()
 
-NOTE:: the REPL code below and the output is a list of books::
+NOTE:: the REPL code below and its output is a list of books::
 
 ```javascript
 Atlas atlas-14jzen-shard-0 [primary] bookApi> db.books.find()

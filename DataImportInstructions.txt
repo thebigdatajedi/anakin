@@ -1,3 +1,0 @@
-To import Book data into your MongoDb database.
-Make sure MongoDB is running then
-run 'mongo bookApi < booksJson.js' in the command line.
