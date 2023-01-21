@@ -15,7 +15,25 @@ const Book = require('./models/bookModel');
 //pulling data from MongoDB with Express
 bookRouter.route('/books')
     .get((req, res) => {
-        const { query } = req;
+        //fixing query to weed out junk data
+        let query = {};
+
+        //if the query is junk then return all books
+        if (req.query.genre) {
+            query.genre = req.query.genre;
+        }else if (req.query.author) {
+            query.author = req.query.author;
+        }else if (req.query.title) {
+            query.title = req.query.title;
+        }else if (req.query.read) {
+            query.read = req.query.read;
+        }else if (req.query._id) {
+            query._id = req.query._id;
+        }else {
+            query = {};
+        }
+
+        //querying the database
         Book.find(query, (err, books) => {
             if (err) {
                 return res.send(err);
