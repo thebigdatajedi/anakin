@@ -12,7 +12,7 @@ const port = process.env.PORT || 3000;
 const Book = require('./models/bookModel');
 //books = Book.db.collection('books');
 
-//pulling data from MongoDB with Express
+//pulling multi book data from MongoDB with Express
 bookRouter.route('/books')
     .get((req, res) => {
         //fixing query to weed out junk data
@@ -27,8 +27,6 @@ bookRouter.route('/books')
             query.title = req.query.title;
         }else if (req.query.read) {
             query.read = req.query.read;
-        }else if (req.query._id) {
-            query._id = req.query._id;
         }else {
             query = {};
         }
@@ -41,6 +39,22 @@ bookRouter.route('/books')
             return res.json(books);
         });
     });
+
+//pulling single book data from MongoDB with Express
+bookRouter.route('/books/:bookId')
+    .get((req, res) => {
+        //fixing query to weed out junk data
+
+        //querying the database
+        Book.findById(req.params.bookId, (err, book) => {
+            if (err) {
+                return res.send(err);
+            }
+            return res.json(book);
+        });
+    });
+
+
 
 //then wire up the router (use the router)
 app.use('/api', bookRouter);
