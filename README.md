@@ -1012,7 +1012,7 @@ mongodb+srv://<database_user>:<password>@<cluster_name>.<unique_identifier>.mong
 
       - Make sure your fields are filled and particularly the URL field because if you get that one right you are golden and DataGrip will remove the <password> in the url by "hiding" it as soon as you put it in::
 ```Bash
-mongodb+srv://<database_user>:<password>@<cluster_name>.<unique_identifier>.mongodb.net/?retryWrites=true&w=majority
+mongodb+srv://<database_user>:<password>@<cluster_name>.<unique_identifier>.mongodb.net/<database_name>
 ```
 
    - These are your options for connecting MongoDB Atlas (MongoDB in the cloud.).
@@ -1293,6 +1293,88 @@ module.exports = mongoose.model('Book', bookModel);
 ```
 
 ## Pulling data out of MongoDb with Express
+
+This is what the code looks like for pulling data out of MongoDB with Express in JSON format::
+
+```javascript
+const express = require('express');
+const mongoose = require('mongoose');
+
+const app = express();
+mongoose.connect('mongodb+srv://<username>:<password>@<cluster_name>.<unique_identifier>.mongodb.net/<db_name>');
+
+//first create the router
+const bookRouter = express.Router();
+const port = process.env.PORT || 3000;
+
+//create the book model
+const Book = require('./models/bookModel');
+//books = Book.db.collection('books');
+
+//pulling data from MongoDB with Express
+bookRouter.route('/books')
+    .get((req, res) => {
+        Book.find((err, books) => {
+            if (err) {
+                return res.send(err);
+            }
+            return res.json(books);
+        });
+    });
+
+//then wire up the router (use the router)
+app.use('/api', bookRouter);
+
+app.get('/', (req, res) => {
+    res.send('Welcome the bookd API!');
+});
+
+//listen configuration
+app.listen(port, () => {
+    console.log(`Running on PORT: ${port}`);
+});
+```
+
+The key is that the connection string needed a reference to the db.
+
+The connection string has a ref to::
+
+1. the cluster
+2. the db
+
+So, that leaves the ORM to do its thing and abstracts the collection in this way::
+
+```javascript
+//create the book model
+const Book = require('./models/bookModel');
+```
+
+bookModel.js module.exports a Schema wrapped in a Model.
+
+It's like this built in dependency injection feature the language has.
+
+Then the methods that the Book object has are for operating on the collection.
+
+Here is all the methods available to Book::
+
+[Mongoose v6.8.4: Model](https://mongoosejs.com/docs/api/model.html)
+
+These are all the methods traditionally available in an ORM to table objects or a Kafka topic objects.
+
+In this case a collection of documents.
+
+You can think of a collection of documents as a table of rows or a topic of messages, a collection of documents.
+
+In the code below the method that the Book model is using is **.find() with an error parameter for processing any errors that comes back** and a **books parameter for processing the json coming back** from the collection.
+
+```javascript
+Book.find((err, books) => {
+            if (err) {
+                return res.send(err);
+            }
+            return res.json(books);
+        });
+```
 
 ### Filtering with a Query String
 
