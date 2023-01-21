@@ -1482,3 +1482,173 @@ Here is what the http response in json looks like::
 
 ![Image.png](https://res.craft.do/user/full/3bd38c9a-7a34-eba3-9876-1d5233e52b8d/doc/69046318-833E-48F8-B393-2F8BE3F4280B/312FABC7-36C5-4335-A96E-58A68F859531_2/V6jI9tKYax3DB9HoNqe4P1F9vF96WOKXEPP3iB29UuQz/Image.png)
 
+## Posting Data
+
+### Implement the HTTP POST verb
+
+- Parsing Post data with Body Parser
+- This is what your app.js should look like::
+```javascript
+const express = require('express');
+const mongoose = require('mongoose');
+
+const app = express();
+mongoose.connect('mongodb+srv://<username>:<password>@<clustername>.<uniqueidentifier>.mongodb.net/<databasename>');
+
+//first create the router
+const bookRouter = express.Router();
+const port = process.env.PORT || 3000;
+
+//create the book model
+const Book = require('./models/bookModel');
+//books = Book.db.collection('books');
+
+//pulling multi book data from MongoDB with Express
+bookRouter.route('/books')
+    .get((req, res) => {
+        //fixing query to weed out junk data
+        let query = {};
+
+        //if the query is junk then return all books
+        if (req.query.genre) {
+            query.genre = req.query.genre;
+        }else if (req.query.author) {
+            query.author = req.query.author;
+        }else if (req.query.title) {
+            query.title = req.query.title;
+        }else if (req.query.read) {
+            query.read = req.query.read;
+        }else {
+            query = {};
+        }
+
+        //querying the database
+        Book.find(query, (err, books) => {
+            if (err) {
+                return res.send(err);
+            }
+            return res.json(books);
+        });
+    });
+
+//pulling single book data from MongoDB with Express
+bookRouter.route('/books/:bookId')
+    .get((req, res) => {
+        //fixing query to weed out junk data
+
+        //querying the database
+        Book.findById(req.params.bookId, (err, book) => {
+            if (err) {
+                return res.send(err);
+            }
+            return res.json(book);
+        });
+    });
+
+
+
+//then wire up the router (use the router)
+app.use('/api', bookRouter);
+
+app.get('/', (req, res) => {
+    res.send('Welcome the bookd API!');
+});
+
+//listen configuration
+app.listen(port, () => {
+    console.log(`Running on PORT: ${port}`);
+});
+```
+
+Add new items to the list
+
+Test with Postman
+
+Saving Data
+
+After doing these three things above, in the .post() you have these things above and your code should look like the code just below, except for  testing with Postman, which I don't test with Postman these days, I use a similar tool called Insomnia (here is the download link for it::  [https://insomnia.rest/download](https://insomnia.rest/download)
+
+Insomnia is free but they offer a cloud service that stores all your project and encryption for them should your queries contain any sensitive information.
+
+```javascript
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+
+const app = express();
+mongoose.connect('mongodb+srv://cruzfg:Butthead1@anakin.2wbl4uu.mongodb.net/bookApi');
+
+//first create the router
+const bookRouter = express.Router();
+const port = process.env.PORT || 3000;
+
+//create the book model
+const Book = require('./models/bookModel');
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+//pulling multi book data from MongoDB with Express
+bookRouter.route('/books')
+    .post((req, res) => {
+        const book = new Book(req.body);
+        console.log(book);
+        book.save();
+        return res.status(201).json(book);
+    })
+    .get((req, res) => {
+        //fixing query to weed out junk data
+        let query = {};
+
+        //if the query is junk then return all books
+        if (req.query.genre) {
+            query.genre = req.query.genre;
+        } else if (req.query.author) {
+            query.author = req.query.author;
+        } else if (req.query.title) {
+            query.title = req.query.title;
+        } else if (req.query.read) {
+            query.read = req.query.read;
+        } else {
+            query = {};
+        }
+
+        //querying the database
+        Book.find(query, (err, books) => {
+            if (err) {
+                return res.send(err);
+            }
+            return res.json(books);
+        });
+    });
+
+//pulling single book data from MongoDB with Express
+bookRouter.route('/books/:bookId')
+    .get((req, res) => {
+        //fixing query to weed out junk data
+
+        //querying the database
+        Book.findById(req.params.bookId, (err, book) => {
+            if (err) {
+                return res.send(err);
+            }
+            return res.json(book);
+        });
+    });
+
+
+//then wire up the router (use the router)
+app.use('/api', bookRouter);
+
+app.get('/', (req, res) => {
+    res.send('Welcome the bookd API!');
+});
+
+//listen configuration
+app.listen(port, () => {
+    console.log(`Running on PORT: ${port}`);
+});
+```
+
+### Code cleanup
+
