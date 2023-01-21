@@ -79,9 +79,15 @@ app.listen(port, function () {
 - We did all this manually to learn the fundamentals of setting up an Express app but express has a CLI for generating this code and more for an application and will create the very basic folder structure needed later for app resources.
 - The instructions above show only part the work that the CLI does for you::
    - Install the express CLI tool globally:
-      - npm install express-generator -g
+```Bash
+npm install express-generator -g
+```
+
    - create a new express project
-      - express --view=ejs api
+```Bash
+express --view=ejs api
+```
+
    - The generator creates a new express app called api. The --view flag tells the generator to use ejs template engine for the view files.
    - Access your directory:
       - cd api
@@ -199,8 +205,9 @@ The above is a comparison contrast between the very basic boiler plate code manu
 ```
 
 - We are going to install ESLint as follows, run::
-
+```Bash
 npm i eslint -D
+```
 
 So the i is for install the package name and the -D means add it to our dev dependencies not our regular dependencies.
 
@@ -263,11 +270,15 @@ npm run applepie
 
 As opposed to start and test that are::
 
+```Bash
 npm start
+```
 
 &
 
+```Bash
 npm test
+```
 
 Second after the lint we have -- or minus minus which means whatever parameter come after -- pass it or them into the script that is being called.
 
@@ -341,7 +352,9 @@ Notice what package.json looks like now::
 
 Now we are going to run::
 
+```Bash
 npm run lint
+```
 
 This is what the output to the initial manual app.js creation looks like for the linter.
 
@@ -374,7 +387,9 @@ Notice how it makes a suggestion to run --fix.
 
 We run --fix::
 
+```Bash
 npm run lint -- --fix
+```
 
 This is the output it gives::
 
@@ -758,7 +773,11 @@ Notice the change from var to const and the spacing in the app.
 
 ## nodemon
 
-- run:: npm install nodemon
+- run::
+```Bash
+npm install nodemon
+```
+
 - nodemon is added to package.json
 - And in order to use nodeman we add it to our start script and we add a config section for nodemon::
 ```json
@@ -797,7 +816,12 @@ Notice the change from var to const and the spacing in the app.
 }
 ```
 
-- run:: npm start (Notice I didn't have to type npm run start, I just had to type npm start.  As stated before start and test are the only script verbs that don't require run in front of them.)
+- run::
+```Bash
+npm start
+```
+
+- (Notice I didn't have to type npm run start, I just had to type npm start.  As stated before start and test are the only script verbs that don't require run in front of them.)
 - This is the output to npm start::
 ```Bash
 npm start
@@ -959,16 +983,25 @@ Works now::
 
 - There are a lot of mongod client examples out there, since we are using MongoDB in the cloud and not local install we will be using mongosh (Pronounced mongo-sh - but I like calling it mon-gosh.) for a REPL or CLI client and Compass and DataGrip for GUI. You decide which one you like best out of those three and any other out there.
 - Install the mongodb shell, run::
-   - brew install mongosh
+```Bash
+brew install mongosh
+```
+
 - run mongosh passing it the connection string in the format below and with the --apiVersion and --username parameters in the shell you just installed mongosh in::
-   - mongosh "[mongodb+srv://<cluster_name>.<unique_identifier>.mongodb.net/r](mongodb+srv://anakin.2wbl4uu.mongodb.net/redkyber)<database_name>" --apiVersion 1 --username <user_name>
+```Bash
+mongosh "mongodb+srv://<cluster_name>.<unique_identifier>.mongodb.net/r<database_name>" --apiVersion 1 --username <user_name>
+```
+
    - You will be prompted for the password for the Database User. When entering your password, make sure all special characters are [URL encoded](https://dochub.mongodb.org/core/atlas-url-encoding).
 - If you also want to install Compass which is Mongo's own client for MongoDB Atlas (in the cloud).
    - Download and install Compass.
    - The new connection modal will be open when Compass loads.
       - Otherwise click on your previously saved connection.
    - Past your connection string in the URI box in the New Connection modal::
-      - [mongodb+srv://<database_user>:<password>@<cluster_name>.<unique_identifier>.mongodb.net/test](mongodb+srv://cruzfg:<password>@anakin.2wbl4uu.mongodb.net/test)
+```Bash
+mongodb+srv://<database_user>:<password>@<cluster_name>.<unique_identifier>.mongodb.net/test
+```
+
       - The Advanced Connection Options allows you to configure a connection to MongoDb that is installed locally.
    - If you wish to connect from Jetbrain's DataGrip click on the + sign on the upper right hand side of the Database Explorer.
    - Select Data Source
@@ -978,7 +1011,10 @@ Works now::
 ![Image.png](https://res.craft.do/user/full/3bd38c9a-7a34-eba3-9876-1d5233e52b8d/doc/69046318-833E-48F8-B393-2F8BE3F4280B/CBE0F6AB-81FB-40E5-AFC1-A75DF2A2B0CA_2/lHGDjeRRM5BTAHgM0KjxSxQ6gYPUeZR8kQ7wsUB5j2Yz/Image.png)
 
       - Make sure your fields are filled and particularly the URL field because if you get that one right you are golden and DataGrip will remove the <password> in the url by "hiding" it as soon as you put it in::
-      - [mongodb+srv://<database_user>:<password>@<cluster_name>.<unique_identifier>.mongodb.net/?retryWrites=true&w=majority](mongodb+srv://cruzfg:<password>@anakin.2wbl4uu.mongodb.net/?retryWrites=true&w=majority)
+```Bash
+mongodb+srv://<database_user>:<password>@<cluster_name>.<unique_identifier>.mongodb.net/?retryWrites=true&w=majority
+```
+
    - These are your options for connecting MongoDB Atlas (MongoDB in the cloud.).
 - ## Definition of REPL
    - REPL (Read-eval-print-loop) - I will be using the term REPL to describe the use of the the command line interface that is app specific or that presents when mongosh is loaded to memory.  Many tools have a REPLs some people refer to them by other words session or shell or session shell or CLI. REPL stands for Read–eval–print loop.  Tool like Node.js, Python have REPLs for testing code, tools like SPARK's main interface is a REPL in which you treat the REPL like a CLI to communicate with the cluster and do tasks like run jobs.  In our case there are 3 ways to communicate with MongoDb Atlas one of them is mongosh which stands for mongo shell and is a different interface than mongod CLI or REPL and the commands are different people use mongod because it's a traditional local install of MongoDb where mongosh is a more recent tool and suited for MongoDb Atlas (cloud MongoDb).
@@ -987,19 +1023,39 @@ Works now::
 ### Logging in through the REPL
 
 - First you log into the mongosh REPL::
-   - mongosh "mongodb+srv://<cluster_name>.<unique_identifier>.[mongodb.net/myFirstDatabase](mongodb.net/myFirstDatabase)" --apiVersion 1 --username <user_name>
+```Bash
+mongosh "mongodb+srv://<cluster_name>.<unique_identifier>.mongodb.net/<data_base>" --apiVersion 1 --username <user_name>
+```
+
 - This command will cause the REPL to ask for your password.
 - Type password and log in.
 - Atlas MongoDb doesn't have a create verb, it will create the db if it doesn't exist when you ask it to::
-   - use <db_name>
+```Bash
+use <db_name>
+```
 
 ## Loading sample data with mongosh.
 
-- show dbs - list dbs
-- use <db_name> - switch context to the db you want from the ones listed when you ran show dbs or creates the db if it doesn't exist.
-- load('<js_file_path>') - load the data by running the insertMany() JS script.
+- list dbs::
+```Bash
+show dbs
+```
+
+- switch context to the db you want from the ones listed when you ran show dbs or creates the db if it doesn't exist::
+```Bash
+use <db_name>
+```
+
+- load the data by running the insertMany() JS script::
+```Bash
+load('<js_file_path>')
+```
+
 - In this case the <js_file_path> would be for the bookJson.js file shown below.
-   - load('/project_root/booksJson.js')
+```Bash
+load('/project_root/booksJson.js')
+```
+
 - NOTE:: The example that I found used .insert() method but mongosh responded that .insert() had been deprecated and that .insertOne(), .insertMany() and .insertAll() were the methods to use. ::
 ```javascript
 db.books.insertMany([
@@ -1057,11 +1113,23 @@ db.books.insertMany([
 - The data in the javascript file which states the collection name it needs to use or create by the notation db.books.insertMany() (collection being books - note there is no separate create collection step in this javascript file).
 - Verify that your data is in MongoDb Atlas through the mongosh REPL::
 
-**show dbs** - this command in the REPL lists  all the dbs
+this command in the REPL lists  all the dbs::
 
-**use <db_name>** - will switch to the to the db context for the db name being used. You need to switch context to the db_name in order to do the next step which is list collections.
+```Bash
+show dbs
+```
 
-**show collections** - lists all the collections in the db you just named with the use command.
+will switch to the to the db context for the db name being used. You need to switch context to the db_name in order to do the next step which is list collections::
+
+```Bash
+use <db_name>
+```
+
+lists all the collections in the db you just named with the use command::
+
+```Bash
+show collections
+```
 
 Note below that when I tried to use bookApi the REPL explained that I was already in that context.
 
@@ -1069,11 +1137,15 @@ Note below that when I tried to use bookApi the REPL explained that I was alread
 
 To list all the records inside a collection then in the context of the db you run::
 
+```Bash
 db.collectionName.find()
+```
 
 Example:
 
+```Bash
 db.books.find()
+```
 
 NOTE:: the REPL code below and its output is a list of books::
 
@@ -1195,6 +1267,32 @@ Atlas atlas-14jzen-shard-0 [primary] bookApi> db.books.find()
 ]
 Atlas atlas-14jzen-shard-0 [primary] bookApi>
 ```
+
+## Creating a model for Express and MongoDb with mongoose
+
+1. npm install mongoose
+2. Do a CommonJS import of mongoose.
+3. pull Schema out of mongoose using destructure notation.
+4. set the const bookModel by newing up Schema by passing the Schema constructor a JSON object that describes the schema of bookModel.
+5. then module.export that by wrapping it in a mongoose.model() method with 'Book' string as it's first parameter and the bookModel schema as it's second parameter.
+
+This is what the code looks like::
+
+```javascript
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
+
+const bookModel = new Schema({
+    title: { type: String },
+    author: { type: String },
+    genre: { type: String },
+    read: { type: Boolean, default: false },
+});
+
+module.exports = mongoose.model('Book', bookModel);
+```
+
+## Pulling data out of MongoDb with Express
 
 ### Filtering with a Query String
 
