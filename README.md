@@ -1376,7 +1376,31 @@ Book.find((err, books) => {
         });
 ```
 
+![Image.png](https://res.craft.do/user/full/3bd38c9a-7a34-eba3-9876-1d5233e52b8d/doc/69046318-833E-48F8-B393-2F8BE3F4280B/1D1DAD80-60AF-4D86-8BD9-4AC4C007D9A1_2/esgVM0hGw00WxilzCSOo7giebv3ssaLOuWUM9dpfc4gz/Image.png)
+
 ### Filtering with a Query String
+
+What Destructuring Does in JavaScript::
+
+```javascript
+//pulling data from MongoDB with Express
+bookRouter.route('/books')
+    .get((req, res) => {
+        const { query } = req;
+        Book.find(query, (err, books) => {
+            if (err) {
+                return res.send(err);
+            }
+            return res.json(books);
+        });
+    });
+```
+
+The way destructuring appears to work is the variable target value is the value of the constituent member of the object being poled and it appears that the constituent member or member has the same name as the variable and this is how the virtual machine knows what value to set the target.
+
+In the example above the target is query and is part of request hence we are using the destructuring feature in JavaScript. This allows for the use of the hook query feature (?) on the address bar of the browser which comes into the program via a req object and used in the .find() method, which appears is overloaded to handle a query parameter.
+
+![Image.png](https://res.craft.do/user/full/3bd38c9a-7a34-eba3-9876-1d5233e52b8d/doc/69046318-833E-48F8-B393-2F8BE3F4280B/77DAB511-C019-41E5-9178-A181F5E27403_2/we18BmrTSa6Id6MV09LqFmbv5e4rR2wXJYM5QYJK89Yz/Image.png)
 
 ### Getting a Single Item
 

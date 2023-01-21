@@ -15,7 +15,8 @@ const Book = require('./models/bookModel');
 //pulling data from MongoDB with Express
 bookRouter.route('/books')
     .get((req, res) => {
-        Book.find((err, books) => {
+        const { query } = req;
+        Book.find(query, (err, books) => {
             if (err) {
                 return res.send(err);
             }
